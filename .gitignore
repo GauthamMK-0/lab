@@ -1,0 +1,20 @@
+# Simulation files
+sim_build/
+*.vvp
+*.vcd
+*.shm
+xcelium.d/
+obj_dir/
+
+# Cadence Genus & Innovus runtime files
+*.log
+*.cmd*
+*.history
+fv/
+genus.cmd*
+genus.log*
+innovus.cmd*
+innovus.log*
+*.enc.dat/
+*.enc
+pnr/
