@@ -123,39 +123,260 @@ As configured in the `mt_npu` project (`/root/research/mt_npu/models/*/synth_*.t
   `/home/cadence/install/FOUNDRY/digital/90nm/dig/lef/all.lef`
 * **Clock Frequency**: 200 MHz ($T_{\text{clk}} = 5.000\text{ ns}$).
 
+*(Optional environment overrides: export `$CADENCE_FOUNDRY_LIB` and `$CADENCE_FOUNDRY_LEF` to redirect library paths without modifying scripts).*
+
 ---
 
-## 4. Execution Commands
+## 4. Command Quick Reference by Model
 
-### Step 1: Run Functional Verification (Testbenches)
-```bash
-make sim-all
-```
-*Runs all 5 testbenches with `iverilog` in batch mode. All 5 testbenches are self-checking and report passing status.*
+| Circuit Model | Simulation (Icarus) | Genus Synthesis | Conformal LEC | Innovus Placement |
+| :--- | :--- | :--- | :--- | :--- |
+| **Circuit 1: 2-bit Multiplier** | `make sim-mult` | `make synth-mult` | `make lec-mult` | `make place-mult` |
+| **Circuit 2: 4-bit Full Adder** | `make sim-adder` | `make synth-adder` | `make lec-adder` | `make place-adder` |
+| **Circuit 3: 4-bit Comparator** | `make sim-comp` | `make synth-comp` | `make lec-comp` | `make place-comp` |
+| **Circuit 4: 4-to-1 Multiplexer** | `make sim-mux` | `make synth-mux` | `make lec-mux` | `make place-mux` |
+| **Circuit 5: 2-to-4 Decoder** | `make sim-dec` | `make synth-dec` | `make lec-dec` | `make place-dec` |
+| **All 5 Models (Batch)** | `make sim-all` | `make synth-all` | `make lec-all` | `make place-all` |
 
-### Step 2: Cadence Genus Synthesis
-```bash
-# Synthesize all 5 simple circuits
-make synth-all
+---
 
-# Or synthesize single circuit:
-make synth-mult
-```
+## 5. Detailed Individual Model Commands
 
-### Step 3: Cadence Conformal LEC
-```bash
-# Run LEC on all designs
-make lec-all
+### Model 1: 2-bit Multiplier (`reg2reg_multiplier`)
 
-# Or run individual LEC dofile:
-make lec-mult
-```
+* **Simulation (Icarus Verilog)**:
+  ```bash
+  # Via Makefile:
+  make sim-mult
 
-### Step 4: Cadence Innovus Placement
-```bash
-# Run Innovus placement on all designs
-make place-all
+  # Direct CLI:
+  iverilog -g2012 -o sim_build/tb_mult.vvp rtl/reg2reg_multiplier.v tb/tb_reg2reg_multiplier.v && vvp sim_build/tb_mult.vvp
+  ```
+* **Logic Synthesis (Cadence Genus)**:
+  ```bash
+  # Via Makefile:
+  make synth-mult
 
-# Or run individual placement:
-make place-mult
-```
+  # Direct CLI:
+  genus -f scripts/synth/synth_reg2reg_multiplier.tcl -log genus_mult.log
+  ```
+* **Logic Equivalence Checking (Cadence Conformal LEC)**:
+  ```bash
+  # Via Makefile:
+  make lec-mult
+
+  # Direct CLI (headless batch):
+  lec -nogui -dofile scripts/lec/lec_reg2reg_multiplier.do
+
+  # Direct CLI (GUI mode for debug):
+  lec -gui -dofile scripts/lec/lec_reg2reg_multiplier.do
+  ```
+* **Physical Placement (Cadence Innovus)**:
+  ```bash
+  # Via Makefile:
+  make place-mult
+
+  # Direct CLI (batch mode):
+  innovus -nowin -batch -files scripts/innovus/place_reg2reg_multiplier.tcl
+
+  # Direct CLI (interactive GUI):
+  innovus -files scripts/innovus/place_reg2reg_multiplier.tcl
+  ```
+
+---
+
+### Model 2: 4-bit Full Adder (`reg2reg_adder`)
+
+* **Simulation (Icarus Verilog)**:
+  ```bash
+  # Via Makefile:
+  make sim-adder
+
+  # Direct CLI:
+  iverilog -g2012 -o sim_build/tb_adder.vvp rtl/reg2reg_adder.v tb/tb_reg2reg_adder.v && vvp sim_build/tb_adder.vvp
+  ```
+* **Logic Synthesis (Cadence Genus)**:
+  ```bash
+  # Via Makefile:
+  make synth-adder
+
+  # Direct CLI:
+  genus -f scripts/synth/synth_reg2reg_adder.tcl -log genus_adder.log
+  ```
+* **Logic Equivalence Checking (Cadence Conformal LEC)**:
+  ```bash
+  # Via Makefile:
+  make lec-adder
+
+  # Direct CLI (headless batch):
+  lec -nogui -dofile scripts/lec/lec_reg2reg_adder.do
+
+  # Direct CLI (GUI mode):
+  lec -gui -dofile scripts/lec/lec_reg2reg_adder.do
+  ```
+* **Physical Placement (Cadence Innovus)**:
+  ```bash
+  # Via Makefile:
+  make place-adder
+
+  # Direct CLI (batch mode):
+  innovus -nowin -batch -files scripts/innovus/place_reg2reg_adder.tcl
+
+  # Direct CLI (interactive GUI):
+  innovus -files scripts/innovus/place_reg2reg_adder.tcl
+  ```
+
+---
+
+### Model 3: 4-bit Magnitude Comparator (`reg2reg_comparator`)
+
+* **Simulation (Icarus Verilog)**:
+  ```bash
+  # Via Makefile:
+  make sim-comp
+
+  # Direct CLI:
+  iverilog -g2012 -o sim_build/tb_comp.vvp rtl/reg2reg_comparator.v tb/tb_reg2reg_comparator.v && vvp sim_build/tb_comp.vvp
+  ```
+* **Logic Synthesis (Cadence Genus)**:
+  ```bash
+  # Via Makefile:
+  make synth-comp
+
+  # Direct CLI:
+  genus -f scripts/synth/synth_reg2reg_comparator.tcl -log genus_comp.log
+  ```
+* **Logic Equivalence Checking (Cadence Conformal LEC)**:
+  ```bash
+  # Via Makefile:
+  make lec-comp
+
+  # Direct CLI (headless batch):
+  lec -nogui -dofile scripts/lec/lec_reg2reg_comparator.do
+
+  # Direct CLI (GUI mode):
+  lec -gui -dofile scripts/lec/lec_reg2reg_comparator.do
+  ```
+* **Physical Placement (Cadence Innovus)**:
+  ```bash
+  # Via Makefile:
+  make place-comp
+
+  # Direct CLI (batch mode):
+  innovus -nowin -batch -files scripts/innovus/place_reg2reg_comparator.tcl
+
+  # Direct CLI (interactive GUI):
+  innovus -files scripts/innovus/place_reg2reg_comparator.tcl
+  ```
+
+---
+
+### Model 4: 4-to-1 Multiplexer (`reg2reg_mux`)
+
+* **Simulation (Icarus Verilog)**:
+  ```bash
+  # Via Makefile:
+  make sim-mux
+
+  # Direct CLI:
+  iverilog -g2012 -o sim_build/tb_mux.vvp rtl/reg2reg_mux.v tb/tb_reg2reg_mux.v && vvp sim_build/tb_mux.vvp
+  ```
+* **Logic Synthesis (Cadence Genus)**:
+  ```bash
+  # Via Makefile:
+  make synth-mux
+
+  # Direct CLI:
+  genus -f scripts/synth/synth_reg2reg_mux.tcl -log genus_mux.log
+  ```
+* **Logic Equivalence Checking (Cadence Conformal LEC)**:
+  ```bash
+  # Via Makefile:
+  make lec-mux
+
+  # Direct CLI (headless batch):
+  lec -nogui -dofile scripts/lec/lec_reg2reg_mux.do
+
+  # Direct CLI (GUI mode):
+  lec -gui -dofile scripts/lec/lec_reg2reg_mux.do
+  ```
+* **Physical Placement (Cadence Innovus)**:
+  ```bash
+  # Via Makefile:
+  make place-mux
+
+  # Direct CLI (batch mode):
+  innovus -nowin -batch -files scripts/innovus/place_reg2reg_mux.tcl
+
+  # Direct CLI (interactive GUI):
+  innovus -files scripts/innovus/place_reg2reg_mux.tcl
+  ```
+
+---
+
+### Model 5: 2-to-4 Decoder (`reg2reg_decoder`)
+
+* **Simulation (Icarus Verilog)**:
+  ```bash
+  # Via Makefile:
+  make sim-dec
+
+  # Direct CLI:
+  iverilog -g2012 -o sim_build/tb_dec.vvp rtl/reg2reg_decoder.v tb/tb_reg2reg_decoder.v && vvp sim_build/tb_dec.vvp
+  ```
+* **Logic Synthesis (Cadence Genus)**:
+  ```bash
+  # Via Makefile:
+  make synth-dec
+
+  # Direct CLI:
+  genus -f scripts/synth/synth_reg2reg_decoder.tcl -log genus_dec.log
+  ```
+* **Logic Equivalence Checking (Cadence Conformal LEC)**:
+  ```bash
+  # Via Makefile:
+  make lec-dec
+
+  # Direct CLI (headless batch):
+  lec -nogui -dofile scripts/lec/lec_reg2reg_decoder.do
+
+  # Direct CLI (GUI mode):
+  lec -gui -dofile scripts/lec/lec_reg2reg_decoder.do
+  ```
+* **Physical Placement (Cadence Innovus)**:
+  ```bash
+  # Via Makefile:
+  make place-dec
+
+  # Direct CLI (batch mode):
+  innovus -nowin -batch -files scripts/innovus/place_reg2reg_decoder.tcl
+
+  # Direct CLI (interactive GUI):
+  innovus -files scripts/innovus/place_reg2reg_decoder.tcl
+  ```
+
+---
+
+## 6. Output Artifacts Directory Structure
+
+Running the flows generates the following outputs:
+
+* **Simulation**: `sim_build/*.vvp`
+* **Gate-Level Netlists**:
+  - `netlist/*_netlist.v` (Structural Verilog netlist)
+  - `netlist/*_netlist.sdc` (Post-synthesis constraints)
+  - `netlist/*_netlist.sdf` (Back-annotation timing delays)
+* **Synthesis & Implementation Reports**:
+  - `reports/timing_*.rpt` (Setup & hold slack reports)
+  - `reports/power_*.rpt` (Leakage & dynamic power dissipation)
+  - `reports/area_*.rpt` (Standard cell area and gate counts)
+  - `reports/qor_*.rpt` (Quality of results summary)
+* **Formal Verification Reports**:
+  - `reports/lec_*_verify.rpt` (Equivalence proof status)
+  - `reports/lec_*_noneq.rpt` (Non-equivalent points, if any)
+  - `reports/lec_*_stats.rpt` (Mapped key point statistics)
+* **Physical Placement Outputs**:
+  - `pnr/*_placed.def` (Placed standard cell layout geometry in DEF)
+  - `pnr/*_placed.enc` / `pnr/*_placed.db` (Innovus checkpoint database)
+  - `reports/check_place_*.rpt` (Physical legality check)
+  - `reports/placement_timing_*.rpt` (Pre-CTS timing slack)
