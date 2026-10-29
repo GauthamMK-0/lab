@@ -32,5 +32,6 @@ report verification -verbose > reports/lec_reg2reg_mux_verify.rpt
 report compare data -class nonequivalent > reports/lec_reg2reg_mux_noneq.rpt
 report statistics > reports/lec_reg2reg_mux_stats.rpt
 
-// Step 9: Exit
-exit -force
+// Step 9: Open GUI for Interactive Inspection (uncomment 'exit -force' for batch exit)
+set gui on
+// exit -force

@@ -127,23 +127,23 @@ lec-all:
 
 lec-mult:
 	@mkdir -p $(REPORT_DIR)
-	lec -nogui -dofile scripts/lec/lec_reg2reg_multiplier.do
+	lec -dofile scripts/lec/lec_reg2reg_multiplier.do
 
 lec-adder:
 	@mkdir -p $(REPORT_DIR)
-	lec -nogui -dofile scripts/lec/lec_reg2reg_adder.do
+	lec -dofile scripts/lec/lec_reg2reg_adder.do
 
 lec-comp:
 	@mkdir -p $(REPORT_DIR)
-	lec -nogui -dofile scripts/lec/lec_reg2reg_comparator.do
+	lec -dofile scripts/lec/lec_reg2reg_comparator.do
 
 lec-mux:
 	@mkdir -p $(REPORT_DIR)
-	lec -nogui -dofile scripts/lec/lec_reg2reg_mux.do
+	lec -dofile scripts/lec/lec_reg2reg_mux.do
 
 lec-dec:
 	@mkdir -p $(REPORT_DIR)
-	lec -nogui -dofile scripts/lec/lec_reg2reg_decoder.do
+	lec -dofile scripts/lec/lec_reg2reg_decoder.do
 
 # --- Cadence Innovus Placement Targets ---
 place: place-all

@@ -21,7 +21,7 @@ echo "=================================================================="
 
 for design in "${DESIGNS[@]}"; do
     echo ">>> Running LEC for: ${design}"
-    lec -nogui -dofile "scripts/lec/lec_${design}.do" || {
+    lec -dofile "scripts/lec/lec_${design}.do" || {
         echo ">>> [WARNING] LEC finished with non-zero exit code or tool unavailable on this host."
     }
 done
