@@ -1,5 +1,6 @@
 # ==============================================================================
 # Cadence Genus Master Synthesis Script: Synthesizes all 5 simple circuits
+# Verified against Cadence Genus v21.14-s082_1 log in mt_npu (genus_hdf_top.log3)
 # ==============================================================================
 
 set designs {
@@ -16,6 +17,7 @@ puts "=================================================================="
 
 foreach d $designs {
     puts ">>> [clock format [clock seconds]] Synthesizing: $d"
+    catch { delete_obj [get_db designs *] }
     source scripts/synth/synth_${d}.tcl
     puts ">>> Completed: $d"
 }

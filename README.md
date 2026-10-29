@@ -49,6 +49,7 @@ This repository contains **5 simple register-to-register combinational circuits*
 │       ├── mmmc_reg2reg_comparator.tcl
 │       ├── mmmc_reg2reg_mux.tcl
 │       ├── mmmc_reg2reg_decoder.tcl
+│       ├── cts.tcl
 │       ├── place_common.tcl
 │       ├── place_reg2reg_multiplier.tcl
 │       ├── place_reg2reg_adder.tcl
@@ -116,14 +117,18 @@ All timing paths are isolated purely between flip-flop registers, guaranteeing c
 
 ## 3. Technology File Locations (Referenced from `mt_npu`)
 
-As configured in the `mt_npu` project (`/root/research/mt_npu/models/*/synth_*.tcl`):
-* **Standard Cell Liberty Timing File**:
+As verified in the `mt_npu` Cadence Genus (`genus_hdf_top.log3`) and Cadence Innovus (`innovus.log` / `HDFF.view`) logs:
+* **Standard Cell Setup (MAX) Liberty Timing File**:
   `/home/cadence/install/FOUNDRY/digital/90nm/dig/lib/slow.lib`
-* **Standard Cell Physical LEF File**:
-  `/home/cadence/install/FOUNDRY/digital/90nm/dig/lef/all.lef`
+* **Standard Cell Hold (MIN) Liberty Timing File**:
+  `/home/cadence/install/FOUNDRY/digital/90nm/dig/lib/fast.lib`
+* **Standard Cell Physical LEF File (`gsclib090site`)**:
+  `/home/cadence/install/FOUNDRY/digital/90nm/dig/lef/gsclib090_translated.lef`
+* **Extended Capacitance Table (`CAP` RC Corner)**:
+  `/home/cadence/install/FOUNDRY/digital/90nm/dig/captable/gpdk090.lef.extended.CapTbl`
 * **Clock Frequency**: 200 MHz ($T_{\text{clk}} = 5.000\text{ ns}$).
 
-*(Optional environment overrides: export `$CADENCE_FOUNDRY_LIB` and `$CADENCE_FOUNDRY_LEF` to redirect library paths without modifying scripts).*
+*(Optional environment overrides: export `$CADENCE_FOUNDRY_LIB`, `$CADENCE_FOUNDRY_LEF`, and `$CADENCE_FOUNDRY_CAP` to redirect library paths without modifying scripts).*
 
 ---
 
