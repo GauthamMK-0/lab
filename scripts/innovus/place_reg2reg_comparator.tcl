@@ -124,11 +124,9 @@ sroute -connect { blockPin padPin padRing corePin floatingStripe } \
 saveDesign pnr/${DESIGN_NAME}_power.enc
 
 # ------------------------------------------------------------------------------
-# 4. Pre-Place Optimization, Standard Cell Placement & Pre-CTS Opt (innovus.cmd lines 86-104)
+# 4. Pre-Place Timing, Standard Cell Placement & Pre-CTS Opt (innovus.log lines 659-2505)
 # ------------------------------------------------------------------------------
 timeDesign -prePlace -setup -outDir reports/timingReports_${DESIGN_NAME}
-optDesign -prePlace -setup
-optDesign -prePlace
 
 setPlaceMode -fp false
 place_design
@@ -188,7 +186,7 @@ defOut -floorplan -netlist -routing pnr/${DESIGN_NAME}_cts.def
 saveDesign pnr/${DESIGN_NAME}_cts.enc
 
 # ------------------------------------------------------------------------------
-# 6. NanoRoute Global/Detail Routing, Fillers & Post-Route Opt (innovus.cmd lines 189-223)
+# 6. NanoRoute Global/Detail Routing, Post-Route Opt & Fillers (innovus.log lines 7395-8425)
 # ------------------------------------------------------------------------------
 setNanoRouteMode -quiet -routeTopRoutingLayer 9
 setNanoRouteMode -quiet -routeBottomRoutingLayer 1
@@ -197,12 +195,11 @@ setNanoRouteMode -quiet -routeWithTimingDriven false
 setNanoRouteMode -quiet -routeWithSiDriven false
 routeDesign -globalDetail
 
-addFiller -cell FILL1 FILL2 FILL4 FILL8 FILL16 -prefix FILLER
-
-timeDesign -postRoute -setup -hold -outDir reports/timingReports_${DESIGN_NAME}
 setAnalysisMode -analysisType onChipVariation -cppr both
 timeDesign -postRoute -setup -hold -outDir reports/timingReports_${DESIGN_NAME}
 optDesign -postRoute -setup -hold
+
+addFiller -cell FILL1 FILL2 FILL4 FILL8 FILL16 -prefix FILLER
 
 report_timing -machine_readable -max_paths 10000 -max_slack 0.75 -path_exceptions all -late > reports/${DESIGN_NAME}_top.mtarpt
 report_timing > reports/placement_timing_${DESIGN_NAME}.rpt
